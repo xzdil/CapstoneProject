@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>GGame</title>
+    <meta charset="utf-8">
+    <link rel="icon" href="/static/gg.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-32x32.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link href="/maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        table {width: 100%; border-collapse: collapse;}
+        table td {padding: 12px 16px;}
+        table thead tr {font-weight: bold; border-top: 1px solid #e8e9eb;}
+        table tr {border-bottom: 1px solid #e8e9eb;}
+        table tbody tr:hover {background: #e8f6ff;}
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #f2f2f2;
+            font-weight: 300;
+            font-size: 16px;
+        }
+        .jumbotron {
+            background-image: url("/static/son.jpg");
+            background-size: 100%;
+            color: #f2f2f2;
+        }
+        a.btn-primary {
+            color: white;
+            margin-top: 20px;
+        }
+
+        .row {
+            text-align: center;
+        }
+        h2 {
+            font-size: 35px;
+            margin-left: 40px;
+            font-family: 'Lato', sans-serif;
+        }
+        ul.a {
+            margin-left: 25px;
+            border-left: 5px solid orangered;
+
+
+        }
+        ul.a li {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: 17px;
+        }
+        img {
+            margin-left: 40px;
+            height: auto;
+            /* еще больше контроля с max-width */
+            object-fit: cover;
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            margin-left: 40px;
+        }
+        tr {
+            background-color:ghostwhite;
+            font-size: 20px;
+            text-align: center;
+
+        }
+        th {
+            font-size: 20px;
+            background-color:cornflowerblue;
+            font-family: Calibri, serif;
+            text-align: center;
+
+        }
+        table {
+            width: 70%;
+        }
+        ul.b {
+            margin-left: 25px;
+            list-style-type: circle;
+        }
+        ul.b li {
+            font-size:17px;
+        }
+        .t {
+            font-size: 20px;
+            margin-left: 40px;
+        }
+        img {
+            border-radius: 10px;
+        }
+
+        #panel{
+            display: none;
+        }
+        #panel-1{
+            display: none;
+        }
+        #panel-2{
+            display: none;
+        }
+        #panel-3{
+            display: none;
+        }
+        #panel-4{
+            display: none;
+        }
+        #panel-5{
+            display: none;
+        }
+        #flip{  background-color: white;
+            color: black;
+            text-overflow: clip;
+            cursor: pointer;
+            border-color: orangered;
+            margin-bottom: 20px;
+            border-radius: 25px;
+        }
+        #flip-1{
+            background-color: white;
+            color: black;
+            text-overflow: clip;
+            cursor: pointer;
+            border-color: orangered;
+            margin-bottom: 20px;
+            border-radius: 25px;
+        }
+        #flip-2{
+            background-color: white;
+            color: black;
+            text-overflow: clip;
+            cursor: pointer;
+            border-color: orangered;
+            margin-bottom: 20px;
+            border-radius: 25px;
+        }
+        #flip-3{
+            background-color: white;
+            color: black;
+            text-overflow: clip;
+            cursor: pointer;
+            border-color: orangered;
+            margin-bottom: 20px;
+            border-radius: 25px;
+        }
+        #flip-4{
+            background-color: white;
+            color: black;
+            text-overflow: clip;
+            cursor: pointer;
+            border-color: orangered;
+            margin-bottom: 20px;
+            border-radius: 25px;
+        }
+        #flip-5{
+            background-color: white;
+            color: black;
+            text-overflow: clip;
+            cursor: pointer;
+            border-color: orangered;
+            margin-bottom: 20px;
+            border-radius: 25px;
+        }
+        label {
+            font-size: 20px;
+            position: relative;
+            left: 5px;
+        }
+        .m {
+            position: relative;
+            right: 50px;
+        }
+        .slideshow-container {
+            position: relative;
+            background: #f1f1f1f1;
+        }
+
+        /* Slides */
+        .mySlides {
+            display: none;
+            padding: 80px;
+            text-align: center;
+        }
+
+        /* Next & previous buttons */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            margin-top: -30px;
+            padding: 16px;
+            color: #888;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+
+        /* Position the "next button" to the right */
+        .next {
+            position: absolute;
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        /* On hover, add a black background color with a little bit see-through */
+        .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+        }
+
+        /* The dot/bullet/indicator container */
+        .dot-container {
+            text-align: center;
+            padding: 20px;
+            background: #ddd;
+        }
+
+        /* The dots/bullets/indicators */
+        .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        /* Add a background color to the active dot/circle */
+        .active, .dot:hover {
+            background-color: #717171;
+        }
+
+        /* Add an italic font style to all quotes */
+        q {font-style: italic;}
+
+        /* Add a blue color to the author */
+        .author {color: #1c8adb;}
+
+        p3 {
+
+        }
+        iframe {
+            width: 100%;
+        }
+        .btn{
+            color: white;
+        }
+        .btn:hover {
+            color: black;
+        }
+        .content-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            min-width: 400px;
+            border-radius: 5px 5px 0 0;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .content-table thead tr {
+            background-color: #1c8adb;
+            color: #ffffff;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .content-table th,
+        .content-table td {
+            padding: 12px 15px;
+        }
+
+        .content-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .content-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .content-table tbody tr:last-of-type {
+            border-bottom: 2px solid #1c8adb;
+        }
+        a{
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+<%-include('navbar')%>
+<div class="jumbotron">
+    <div class="container" style="color: black">
+        <h1>Your diary for every day!</h1>
+        <p id="lol">You can keep your diary, and we will keep statistics of your emotions.</p>
+        <p><a id="get_work" href="/" class="btn btn-primary btn-lg">Write &raquo;</a> </p>
+    </div>
+</div>
+<div class="container w">
+    <div class="row">
+
+    </div>
+    <br><br>
+    <div class="container" style="display: block" >
+
+    </div>
+</div>
+
+</body>
+
+</html>

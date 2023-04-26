@@ -1,0 +1,123 @@
+<!doctype html>
+<head>
+    <title>Emotion detection</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/natural@6.2.0"></script>
+
+    <style>
+        .form {
+            border: 3px solid #f1f1f1;
+            padding-inline:25%
+        }
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Add a hover effect for buttons */
+        button:hover {
+            opacity: 0.8;
+        }
+
+        img.avatar {
+            width: 40%;
+            border-radius: 50%;
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+        span.psw {
+            float: right;
+            padding-top: 16px;
+        }
+
+        @media screen and (max-width: 300px) {
+            span.psw {
+                display: block;
+                float: none;
+            }
+            .cancelbtn {
+                width: 100%;
+            }
+        }
+        #log{
+            display: inline;
+        }
+    </style>
+
+</head>
+
+<body>
+<%-include('navbar')%>
+
+<div class="form">
+    <div class="container">
+        <h2>Emotion classifier in text</h2>
+    </div>
+    <br>
+    <form>
+    <input  onchange="getPredict()" type="text" id="input" name="input" required width="500">
+    <div id="text"><h3></h3><h3 id="predictions"></h3></div>
+        <table>
+            <tr>
+                <th>Emotion</th>
+                <th>Logit</th>
+            </tr>
+            <tr>
+                <td>Sadness</td>
+                <td id="sad">-</td>
+                <td>%</td>
+            </tr>
+            <tr>
+                <td>Joy</td>
+                <td id="joy">-</td>
+                <td>%</td>
+            </tr>
+            <tr>
+                <td>Love</td>
+                <td id="love">-</td>
+                <td>%</td>
+            </tr>
+            <tr>
+                <td>Anger</td>
+                <td id="anger">-</td>
+                <td>%</td>
+            </tr>
+            <tr>
+                <td>Fear</td>
+                <td id="fear">-</td>
+                <td>%</td>
+            </tr>
+            <tr>
+                <td>Surprised </td>
+                <td id="surp">-</td>
+                <td>%</td>
+            </tr>
+        </table>
+
+        <button onclick="getSentences()" id="button" type="button">Separate</button>
+    </form>
+</div>
+
+<script src="http://localhost:5000/model2.js">
+</script>
+</body>
