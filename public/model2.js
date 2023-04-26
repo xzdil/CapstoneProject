@@ -44,7 +44,6 @@ async function getPredict(){
     const vector2 = getIndices(input.value,vocab2)
 
     console.log(vector)
-    console.log(vocab[915])
     console.log("vectorized!")
 
     const tensor = tf.tensor1d(vector)
@@ -100,11 +99,17 @@ async function predict(text){
 
 }
 
+function concatenateTensors(arr) {
+    const splitArr = arr.map(tensor => tensor.expandDims(0));
+    const tensor = tf.concat(splitArr)
+    arr = tensor.arraySync().map(innerArr => innerArr[0].map(val => Number((val*100).toFixed(2))));
+    return arr
+}
+
 function getAverageColumns(arr) {
     const result = []
-    arr = tf.concat([arr[0],arr[1]],0)
-    const data = arr.arraySync();
-    console.log(data[0])
+    const data = concatenateTensors(arr)
+    console.log(data+ " Concated")
 
     // Проходим по каждой колонке в исходном массиве
     for (let j = 0; j < data[0].length; j++) {
@@ -125,6 +130,7 @@ function getAverageColumns(arr) {
     return result;
 }
 
+
 async function getSentences() {
     const classes = ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"]
     const text = input.value.toLowerCase()
@@ -140,7 +146,30 @@ async function getSentences() {
     }
     const predictions = getAverageColumns(array)
     const prd = argMax(predictions)
-        console.log(array + " Got predictions array")
+    console.log(array + " Got predictions array")
     const myPred = document.getElementById("average")
     myPred.innerHTML = classes[prd]
+
+    const concated = concatenateTensors(array)
+    const table = document.getElementById("sentences")
+    let th = document.createElement('th');
+    th.appendChild(document.createTextNode("Id "));
+    table.appendChild(th)
+    for(let l of classes){
+        th = document.createElement('th');
+        th.appendChild(document.createTextNode(l+" "));
+        table.appendChild(th)
+    }
+    for(let i of concated){
+        const row = document.createElement('tr');
+        row.appendChild(document.createTextNode("ID "))
+        for(let j of i) {
+            const cell1 = document.createElement('td');
+            const cellText1 = document.createTextNode(j+" ");
+            cell1.appendChild(cellText1);
+            row.appendChild(cell1);
+        }
+        table.appendChild(row);
+    }
+
 }
