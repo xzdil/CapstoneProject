@@ -102,7 +102,7 @@ async function predict(text){
 function concatenateTensors(arr) {
     const splitArr = arr.map(tensor => tensor.expandDims(0));
     const tensor = tf.concat(splitArr)
-    arr = tensor.arraySync().map(innerArr => innerArr[0].map(val => Number((val*100).toFixed(2))));
+    arr = tensor.arraySync().map(innerArr => innerArr[0].map(val => Number((val).toFixed(2))));
     return arr
 }
 
@@ -145,31 +145,58 @@ async function getSentences() {
         array.push(await predict(sentence))
     }
     const predictions = getAverageColumns(array)
+    console.log(predictions+" getavercol")
     const prd = argMax(predictions)
     console.log(array + " Got predictions array")
-    const myPred = document.getElementById("average")
-    myPred.innerHTML = classes[prd]
+
 
     const concated = concatenateTensors(array)
     const table = document.getElementById("sentences")
     let th = document.createElement('th');
+
     th.appendChild(document.createTextNode("Id "));
     table.appendChild(th)
+
     for(let l of classes){
         th = document.createElement('th');
         th.appendChild(document.createTextNode(l+" "));
         table.appendChild(th)
     }
-    for(let i of concated){
+    th = document.createElement('th');
+    th.appendChild(document.createTextNode("Prediction "));
+    table.appendChild(th)
+
+    concated.forEach(function(i,index) {
         const row = document.createElement('tr');
-        row.appendChild(document.createTextNode("ID "))
-        for(let j of i) {
-            const cell1 = document.createElement('td');
-            const cellText1 = document.createTextNode(j+" ");
+        row.appendChild(document.createTextNode(index+1));
+        i.forEach(function(j) {
+            let cell1 = document.createElement('td');
+            let cellText1 = document.createTextNode(Number((j*100).toFixed(2))+ "% ");
             cell1.appendChild(cellText1);
             row.appendChild(cell1);
-        }
+        });
+        const pred = argMax(i)
+        let cell1 = document.createElement('td');
+        let cellText1 = document.createTextNode(classes[pred]);
+        cell1.appendChild(cellText1);
+        row.appendChild(cell1);
         table.appendChild(row);
-    }
+    });
+
+    console.log("conc for each is working")
+    const row = document.createElement('tr');
+    row.appendChild(document.createTextNode("Total"));
+        predictions.forEach(function(j) {
+
+            const cell1 = document.createElement('td');
+            const cellText1 = document.createTextNode(Number((j*100).toFixed(2)) + "% ");
+            cell1.appendChild(cellText1);
+            row.appendChild(cell1);
+        });
+        const cell1 = document.createElement('td');
+        const cellText1 = document.createTextNode(classes[prd]);
+        cell1.appendChild(cellText1);
+        row.appendChild(cell1);
+        table.appendChild(row);
 
 }

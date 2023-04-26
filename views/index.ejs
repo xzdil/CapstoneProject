@@ -75,9 +75,10 @@
     </div>
     <br>
     <form>
-    <input  onchange="getPredict()" type="text" id="input" name="input" required width="500">
-    <div id="text"><h3></h3><h3 id="predictions"></h3></div>
-        <table>
+        <textarea onchange="getPredict()" id="input" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+
+    <div id="text"><h3></h3><h3 style="display: none" id="predictions"></h3></div>
+        <table style="display: none" class="table">
             <tr>
                 <th>Emotion</th>
                 <th>Logit</th>
@@ -113,8 +114,8 @@
                 <td>%</td>
             </tr>
         </table>
-        <h3 id="average"></h3>
-        <table >
+
+        <table class="table">
             <tbody id="sentences">
 
             </tbody>
