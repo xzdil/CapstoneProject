@@ -125,8 +125,9 @@ function getAverageColumns(arr) {
     return result;
 }
 
-async function getSentences(text){
-    text = input.value.toLowerCase()
+async function getSentences() {
+    const classes = ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"]
+    const text = input.value.toLowerCase()
     console.log(text)
     const sentences = text.split(/[.!?]+/).filter(Boolean);
     console.log(sentences)
@@ -137,7 +138,9 @@ async function getSentences(text){
         console.log("Predicting...")
         array.push(await predict(sentence))
     }
-
-    console.log(array + " Got predictions array")
-    const averageArr = getAverageColumns(array)
+    const predictions = getAverageColumns(array)
+    const prd = argMax(predictions)
+        console.log(array + " Got predictions array")
+    const myPred = document.getElementById("average")
+    myPred.innerHTML = classes[prd]
 }
