@@ -10,6 +10,8 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const db = require('./config/keys').mongoURI;
 
+const Chart = require("chart.js/auto")
+
 const flash = require('connect-flash');
 
 const User = require("./models/User");

@@ -81,7 +81,6 @@ async function getPredict(){
 }
 
 async function predict(text){
-
     const classes = ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"]
     const response = await fetch('http://localhost:5000/tfjs/vocab.json');
     const vocab1 = await response.json();
@@ -94,7 +93,6 @@ async function predict(text){
     const model = await tf.loadLayersModel('http://localhost:5000/tfjs/model.json');
     console.log(await model.predict(flat_tensor)+"Predict")
     return model.predict(flat_tensor)
-
 }
 
 function concatenateTensors(arr) {
@@ -196,11 +194,13 @@ async function getSentences() {
     console.log("conc for each is working")
     const row = document.createElement('tr');
     row.appendChild(document.createTextNode("Total"));
-        predictions.forEach(function(j) {
+        predictions.forEach(function(j,index) {
 
             const cell1 = document.createElement('td');
             const cellText1 = document.createTextNode(Number((j*100).toFixed(2)) + "% ");
             cell1.appendChild(cellText1);
+            console.log(j)
+            cell1.setAttribute('id', index);
             row.appendChild(cell1);
         });
         const cell1 = document.createElement('td');
@@ -208,5 +208,56 @@ async function getSentences() {
         cell1.appendChild(cellText1);
         row.appendChild(cell1);
         table.appendChild(row);
+
+
+    const sad      = predictions[0]
+    const joy      = predictions[1]
+    const love     = predictions[2]
+    const anger    = predictions[3]
+    const fear     = predictions[4]
+    const surprise = predictions[5]
+    console.log(sad + " SAD ")
+    var ctxB = document.getElementById("barChart").getContext('2d');
+    var myBarChart = new Chart(ctxB, {
+        type: 'bar',
+        data: {
+            labels: ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"],
+            datasets: [{
+                label: 'Emotions',
+                data: [sad, joy, love, anger, fear, surprise],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+}
+
+
+function getChart(){
 
 }
