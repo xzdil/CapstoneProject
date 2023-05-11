@@ -1,4 +1,4 @@
-dbPassword = 'mongodb+srv://dappyx:pululuku90@cluster0.n3wcz.mongodb.net/emostats?retryWrites=true&w=majority';
+dbPassword = '';
 
 module.exports = {
     mongoURI: dbPassword
