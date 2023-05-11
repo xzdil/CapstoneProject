@@ -152,11 +152,11 @@
                     <div class="panel-body">
                         <div class="text-center" id="author">
                             <img
-                                style="border: 5px solid deepskyblue;" width="200px" src="">
-                            <h3> username </h3>
-                            <small class="label label-warning">mail</small>
+                                style="border: 5px solid deepskyblue;" width="200px" src="http://localhost:5000/<%-user.avatar%>">
+                            <h3> <%-user.name%> </h3>
+                            <small class="label label-warning"><%-user.email%></small>
                             <p>AITU</p>
-                            <p>status</p>
+                            <p><%-user.status%></p>
                                 <a style=" padding: 0.1rem 0.4rem;" class="btn" type="button" href="/users/0/date">Admin panel</a>
 
                             <a style="background: slategray; padding: 0.1rem 0.4rem;" class="btn" type="button" href="/edit">Edit profile</a>

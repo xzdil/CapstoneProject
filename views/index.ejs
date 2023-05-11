@@ -72,10 +72,11 @@
 <div class="form">
     <div class="container">
         <h2>Emotion classifier in text</h2>
+        <p>Describe how was your day and get your emotional statistics</p>
     </div>
     <br>
     <form>
-        <textarea onchange="getPredict()" id="input" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <textarea placeholder="Enter your text" onchange="getPredict()" id="input" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
 
     <div id="text"><h3></h3><h3 style="display: none" id="predictions"></h3></div>
         <table style="display: none" class="table">
@@ -115,12 +116,12 @@
             </tr>
         </table>
 
-        <table class="table">
+        <table class="table" id="table">
             <tbody id="sentences">
 
             </tbody>
         </table>
-        <button onclick="getSentences()" id="button" type="button">Separate</button>
+        <button onclick="getSentences()" id="button" type="button">Predict</button>
     </form>
 </div>
 

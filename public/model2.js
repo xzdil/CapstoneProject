@@ -4,8 +4,6 @@ function argMax(array) {
     return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
 }
 
-
-
 function getIndices(text, dictionary) {
     text = text.toLowerCase()
     text = text.replace(/[!"#$%&()*+,-/:;<=>?@\[\\\]^_`{|}~'\t\n]/g,'')
@@ -130,8 +128,21 @@ function getAverageColumns(arr) {
     return result;
 }
 
-
 async function getSentences() {
+
+    const obj = document.getElementById("table")
+    const div = document.getElementById("sentences");
+    if (obj.children.length > 0) {
+        div.remove();
+        console.log("Removed")
+    }
+    if (obj.children.length < 1) {
+        let tbody = document.createElement('div');
+        tbody.setAttribute('id', 'sentences');
+        obj.appendChild(tbody)
+        console.log("Added")
+    }
+
     const classes = ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"]
     const text = input.value.toLowerCase()
     console.log(text)
@@ -148,7 +159,6 @@ async function getSentences() {
     console.log(predictions+" getavercol")
     const prd = argMax(predictions)
     console.log(array + " Got predictions array")
-
 
     const concated = concatenateTensors(array)
     const table = document.getElementById("sentences")

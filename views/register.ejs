@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="/static/gg.png">
+    <link
+            rel="stylesheet"
+            href="https://bootswatch.com/4/journal/bootstrap.min.css"
+    />
+    <style>
+        body{
+            margin:  0;
+            padding: 0;
+            font-family:     sans-serif;
+            background-color: lightblue;
+            background-size:      cover;
+            background-position: center;
+        }
+        .sign-up-form
+        {
+            width: 60%;
+            height: 100%;
+            box-shadow: 0 0 3px 0 rgba(0,0, 0, 0.3);
+            background: #fff;
+            padding: 20px;
+            margin: 4% auto 0;
+            text-align: center;
+            border-radius: 20px;
+        }
+        sign-up-form h1{
+            color: #1c8adb;
+            margin-bottom: 30px;
+        }
+        .input-box{
+            border-radius: 20px;
+            padding:       10px;
+            margin:      10px 0;
+            width: 90%;
+            border: 1px solid #999;
+            outline: none;
+        }
+        button{
+            color: #fff;
+            width: 100%;
+            padding: 10px;
+            border-radius: 20px;
+            font-size: 15px;
+            margin: 10px 0;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+        hr{
+            margin-top: 20px;
+            width: 80%;
+        }
+        .or{
+            background: #fff;
+            width: 30px;
+            margin: -19px auto;
+        }
+        .signup-btn{
+            background-color: #1c8adb;
+        }
+        .sign-up-form h1 {
+            color: #1c8adb;
+            margin-bottom: 30px;
+        }
+        img{
+            width:150px;
+            height:100px;
+        }
+    </style>
+</head>
+<body>
+<div class="sign-up-form">
+    <h1>Register</h1>
+    <%-include('./partials/messages')%>
+    <form action="/login/register" method="POST">
+
+        <input type="name"
+               id="name"
+               name="name"
+               class="input-box"
+               placeholder="Enter name"
+               value="<%= typeof name != 'undefined' ? name : '' %>">
+        <input type="email"
+               id="email"
+               name="email"
+               class="input-box"
+               placeholder="Enter email"
+               value="<%= typeof email != 'undefined' ? email : '' %>">
+
+        <input
+                type="password"
+                id="password"
+                name="password"
+                class="input-box"
+                placeholder="Enter password"
+                value="<%= typeof password != 'undefined' ? password : '' %>"
+        />
+
+        <input type="password"
+               id="password2"
+               name="password2"
+               class="input-box"
+               placeholder="Confirm password"
+               value="<%= typeof password2 != 'undefined' ? password2 : '' %>">
+        <button type="submit" class="signup-btn">Register</button>
+        <hr>
+        <p>Already have an account?<a href="/login/login"> Login</a></p>
+    </form>
+</div>
+</body>
+</html>
