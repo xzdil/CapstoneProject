@@ -50,8 +50,10 @@
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(15).webp" class="d-block w-100"
                          alt="Sunset Over the City" />
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        <%if(last){%>
+                        <h5><%=classes[array[0]]%></h5>
+                        <p><%=last[0].text%></p>
+                        <%}%>
                     </div>
                 </div>
 
@@ -60,8 +62,10 @@
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp" class="d-block w-100"
                          alt="Canyon at Nigh" />
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Second slide label</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <%if(last){%>
+                        <h5><%=classes[array[1]]%></h5>
+                        <p><%=last[1].text%></p>
+                        <%}%>
                     </div>
                 </div>
 
@@ -70,8 +74,9 @@
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(23).webp" class="d-block w-100"
                          alt="Cliff Above a Stormy Sea" />
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Third slide label</h5>
-                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                        <%if(last){%>
+                        <h5><%=classes[array[2]]%></h5>
+                        <p><%=last[2].text%></p><%}%>
                     </div>
                 </div>
             </div>
@@ -94,7 +99,11 @@
 
     </div>
 </div>
-
+<script>
+    function argMax(array) {
+        return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
+    }
+</script>
 </body>
 
 </html>

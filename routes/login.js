@@ -58,7 +58,7 @@ router.post('/register',(req,res)=>{
     }
 
     if(errors.length>0){
-        res.render('register', {
+        res.render('reg', {
             errors,
             name,
             email,
@@ -71,7 +71,7 @@ router.post('/register',(req,res)=>{
             .then(user => {
                 if(user){
                     errors.push({msg:'Username/Email is taken'});
-                    res.render('register', {
+                    res.render('reg', {
                         errors,
                         name,
                         email,

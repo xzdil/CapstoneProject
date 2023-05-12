@@ -2,10 +2,32 @@
     const router    = express.Router();
     const {ensureAuthenticated} = require("../config/auth");
     const Stats = require("../models/Stats")
-router.get('/', ensureAuthenticated, (req,res)=>{
-    res.render('main',{
-        user:req.user
-    })
+
+    function argMax(array) {
+        return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
+    }
+
+router.get('/', ensureAuthenticated, async (req,res)=>{
+    const last = await Stats.find({user:req.user._id}).sort({date:-1}).limit(3)
+    if(last.length > 0){
+        const first = argMax(last[0].emotions)
+        const second = argMax(last[1].emotions)
+        const third = argMax(last[2].emotions)
+        res.render('main',{
+            user:req.user,
+            last:last,
+            array:[first,second,third],
+            classes:["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"]
+        })
+    } else {
+        res.render('main',{
+            user:req.user,
+            last:0,
+            array:[[0],[0],[0]],
+            classes:["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"]
+        })
+    }
+
     console.log('main');
 });
 
@@ -33,7 +55,12 @@ router.get('/', ensureAuthenticated, (req,res)=>{
 
 
     router.get('/profile',ensureAuthenticated, async (req,res)=>{
-        const statistic = await Stats.find({user:req.user._id});
+        const statistic = await Stats.find({user:req.user._id,date:
+                {
+                    $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                    $lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
+            }
+        })
         const emotionsArrays = statistic.map((item) => item.emotions);
         console.log(emotionsArrays)
         const average = averageColumns(emotionsArrays)
@@ -45,9 +72,27 @@ router.get('/', ensureAuthenticated, (req,res)=>{
 });
 router.get('/stats',ensureAuthenticated,  (req,res)=>{
     const stats = Stats.find({user:req.user._id})
+    const year = Stats.find({user:req.user._id, date:
+            {
+                $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                $lt: new Date(new Date().getFullYear()+1, new Date().getMonth(), 1)
+            }})
+    const month = Stats.find({user:req.user._id, date:
+    {
+        $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        $lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
+    }})
+    const week = Stats.find({user:req.user._id, date:
+            {
+                $gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDay()),
+                $lt: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDay()+7)
+            }})
     res.render('stats',{
         user:req.user,
-        stats:stats
+        stats:stats,
+        year:year,
+        month:month,
+        week:week
     })
     console.log('stats');
 });
