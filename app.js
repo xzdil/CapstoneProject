@@ -54,6 +54,7 @@ app.use('/login', require('./routes/login'));
 
 app.get('/',ensureAuthenticated,async (req,res)=>{
     res.render('index',{
+        user:req.user
     })
 })
 

@@ -1,28 +1,38 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.min.js" integrity="sha512-+sCoGPlbKDblqf1cdtmOKPXQOThQgrBYXdkqFvnMijTnPQ6J2NoaqUQNVSzJl/m2ArGFGN0soa/pKKioLBVdwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.dark.min.css" integrity="sha512-mBHbS6kD/getK5vUTRNDHPJYvJsFl1VTBEa8M0iT3eGS6D5fcEl6hCBLOeY1k4k2JS/cdlwUy7LC14BSbVUBzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.min.css" integrity="sha512-S7pFEiuqxNHcuJqa+h7Qkb64Xi8OsJuomfvHDrlYngmQ69rLlhtqxbOFQ4oUB/IwmrIsUjRt75MGFZD049mskg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">EmoStats</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="/main">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/">Emotion classifier</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/main/profile">Profile</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Statistics</a>
-            </li>
-            <li style="float: right"
-                    class="nav-item">
-                <a class="nav-link" href="/login/logout">Logout</a>
-            </li>
-        </ul>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">EmoStats</a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-mdb-toggle="collapse"
+                data-mdb-target="#navbarText"
+                aria-controls="navbarText"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/main">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">Write</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/main/profile">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Statistics</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                <a style="color: white" class="btn btn-primary me-3" href="/login/logout">Logout</a>
+            </span>
+        </div>
     </div>
 </nav>

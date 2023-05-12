@@ -7,13 +7,13 @@ const {forwardAuthenticated} = require('../config/auth')
 const User = require("../models/User");
 
 router.get('/login',forwardAuthenticated,(req,res)=>{
-    res.render('login',{
+    res.render('log',{
 
     })
 })
 
 router.get('/register',forwardAuthenticated,(req,res)=>{
-    res.render('register',{
+    res.render('reg',{
 
     })
 })

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.min.js" integrity="sha512-+sCoGPlbKDblqf1cdtmOKPXQOThQgrBYXdkqFvnMijTnPQ6J2NoaqUQNVSzJl/m2ArGFGN0soa/pKKioLBVdwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.dark.min.css" integrity="sha512-mBHbS6kD/getK5vUTRNDHPJYvJsFl1VTBEa8M0iT3eGS6D5fcEl6hCBLOeY1k4k2JS/cdlwUy7LC14BSbVUBzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.min.css" integrity="sha512-S7pFEiuqxNHcuJqa+h7Qkb64Xi8OsJuomfvHDrlYngmQ69rLlhtqxbOFQ4oUB/IwmrIsUjRt75MGFZD049mskg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+</head>
+<body >
+<!-- Section: Design Block -->
+<section class="">
+    <!-- Jumbotron -->
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 93%)">
+        <div class="container">
+            <div class="row gx-lg-5 align-items-center">
+
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div style="scale: 110%" class="card">
+                    <canvas id="barChart"></canvas></div>
+                </div>
+
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="card">
+                        <div class="card-body py-5 px-md-5">
+                            <form action="/login/login" method="POST">
+                                <!-- 2 column grid layout with text inputs for the first and last names -->
+                                <h3 style="margin-left: 15%" class="my-5 display-3 fw-bold ls-tight">
+                                    <span class="text-primary">Emo</span>Stats
+                                </h3>
+                                <!-- Email input -->
+                                <div class="form-outline mb-4">
+                                    <input name="email" type="email" id="email" class="form-control" />
+                                    <label class="form-label" for="email">Email address</label>
+                                </div>
+
+                                <!-- Password input -->
+                                <div class="form-outline mb-4">
+                                    <input name="password" type="password" id="password" class="form-control" />
+                                    <label class="form-label" for="password">Password</label>
+                                </div>
+                                <br>
+
+                                <!-- Submit button -->
+                                <button type="submit" class="btn btn-primary btn-block mb-4">
+                                    Login
+                                </button>
+
+                                <!-- Register buttons -->
+                                <div class="text-center">
+                                    <p>Don't have an account? <a href="/login/register">Register</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Jumbotron -->
+</section>
+<!-- Section: Design Block -->
+<script>
+    myFunction()
+    function myFunction(){
+        const sad      = Math.random()
+        const joy      = Math.random()
+        const love     = Math.random()
+        const anger    = Math.random()
+        const fear     = Math.random()
+        const surprise = Math.random()
+        console.log(sad + " SAD ")
+        var ctxB = document.getElementById("barChart").getContext('2d');
+        var myBarChart = new Chart(ctxB, {
+            type: 'line',
+            data: {
+                labels: ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"],
+                datasets: [{
+                    label: 'Emotions',
+                    data: [sad, joy, love, anger, fear, surprise],
+                    backgroundColor: [
+                        'rgba(53, 106, 193, 0.2)',
+                        'rgba(53, 106, 193, 0.2)',
+                        'rgba(53, 106, 193, 0.2)',
+                        'rgba(53, 106, 193, 0.2)',
+                        'rgba(53, 106, 193, 0.2)',
+                        'rgba(53, 106, 193, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(53,106,193,1)',
+                        'rgba(53,106,193,1)',
+                        'rgba(53,106,193,1)',
+                        'rgba(53,106,193,1)',
+                        'rgba(53,106,193,1)',
+                        'rgba(53,106,193,1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            max: 1
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    setInterval(myFunction, 1500);
+
+</script>
+
+</body>
+</html>
+
+

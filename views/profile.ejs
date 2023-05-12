@@ -129,8 +129,11 @@
             return JSON.stringify(obj) === JSON.stringify({});
         }
     </script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
 </head>
-<body>
+<body style="background-color: hsl(0, 0%, 93%)">
 
 <%- include('navbar.ejs')%>
 
@@ -140,7 +143,7 @@
     <div id="main">
         <div class="row" id="real-estates-detail">
             <div class="col-lg-4 col-md-4 col-xs-12" >
-                <div class="panel panel-default" style="size: ">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <header class="panel-title">
                             <div class="text-center">
@@ -152,22 +155,11 @@
                     <div class="panel-body">
                         <div class="text-center" id="author">
                             <img
-                                style="border: 5px solid deepskyblue;" width="200px" src="http://localhost:5000/<%-user.avatar%>">
+                                    style="border: 1px solid #356ac1;" width="200px" src="http://localhost:5000/<%-user.avatar%>">
                             <h3> <%-user.name%> </h3>
                             <small class="label label-warning"><%-user.email%></small>
                             <p>AITU</p>
                             <p><%-user.status%></p>
-                                <a style=" padding: 0.1rem 0.4rem;" class="btn" type="button" href="/users/0/date">Admin panel</a>
-
-                            <a style="background: slategray; padding: 0.1rem 0.4rem;" class="btn" type="button" href="/edit">Edit profile</a>
-                            <div id="myTabContent" class="tab-content">
-                                <h4>Friends</h4>
-                                <table class="table table-th-block">
-                                    <tbody>
-                                    friends
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -176,7 +168,8 @@
                 <div class="panel">
                     <div class="panel-body">
                         <div id="myTabContent" class="tab-content">
-                            <h4>Information</h4>
+                            <h4>Statistics of month</h4>
+                            <canvas id="barChart"></canvas>
                             <table class="table table-th-block">
                                 <tbody>
 
@@ -186,20 +179,71 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8 col-md-8 col-xs-12">
-                <div class="panel">
-                    <div class="panel-body">
-                        <div id="myTabContent" class="tab-content" style="width: 100%;">
-                            <h4>Comments</h4>
-                            <table style="word-wrap: break-word; border-collapse: collapse;" class="table table-th-block" >
-                                <tr style="word-wrap: break-word;"></tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
+
+<script>
+    function getChart(emotion){
+        let ctxB = document.getElementById("barChart").getContext('2d');
+        let myBarChart = new Chart(ctxB, {
+            type: 'pie',
+            data: {
+                labels: ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"],
+                datasets: [{label: 'Emotions',
+                    data: [
+                        emotion[0],
+                        emotion[1],
+                        emotion[2],
+                        emotion[3],
+                        emotion[4],
+                        emotion[5]],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(255, 192, 203, 0.5)',
+                        'rgba(255, 0, 34, 0.2)',
+                        'rgba(0, 255, 4, 0.2)',
+                        'rgba(89, 51, 10, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 192, 203, 1)',
+                        'rgba(255, 0, 34, 1)',
+                        'rgba(0, 255, 4, 1)',
+                        'rgba(89, 51, 10, 1)'
+
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            max: 1
+                        }
+                    }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            let dataset = data.datasets[tooltipItem.datasetIndex];
+                            let total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                                return previousValue + currentValue;
+                            });
+                            let currentValue = dataset.data[tooltipItem.index];
+                            let percentage = parseFloat((currentValue / total * 100).toFixed(1));
+                            return percentage + '%';
+                        }
+                    }
+                }
+            }
+        });
+    }
+    getChart([<%=emotions%>])
+</script>
 </body>
 </html>

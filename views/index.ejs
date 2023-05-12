@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.2.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/natural@6.2.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.min.js" integrity="sha512-+sCoGPlbKDblqf1cdtmOKPXQOThQgrBYXdkqFvnMijTnPQ6J2NoaqUQNVSzJl/m2ArGFGN0soa/pKKioLBVdwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.dark.min.css" integrity="sha512-mBHbS6kD/getK5vUTRNDHPJYvJsFl1VTBEa8M0iT3eGS6D5fcEl6hCBLOeY1k4k2JS/cdlwUy7LC14BSbVUBzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.min.css" integrity="sha512-S7pFEiuqxNHcuJqa+h7Qkb64Xi8OsJuomfvHDrlYngmQ69rLlhtqxbOFQ4oUB/IwmrIsUjRt75MGFZD049mskg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         .form {
             border: 3px solid #f1f1f1;
-            padding-inline:25%
+            padding-inline:20%
         }
 
         input[type=text], input[type=password] {
@@ -66,19 +69,20 @@
 
 </head>
 
-<body>
+<body style="background-color: hsl(0, 0%, 93%)">
 <%-include('navbar')%>
 
 <div class="form">
+    <div id="emotions"></div>
     <div class="container">
         <h2>Emotion classifier in text</h2>
         <p>Describe how was your day and get your emotional statistics</p>
     </div>
     <br>
-    <form>
-        <textarea placeholder="Enter your text" onchange="getPredict()" id="input" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    <form action="/main/stats" method="post" style="width: 100%">
+        <textarea placeholder="Enter your text" onchange="getSentences()" id="input" name="text" class="form-control" id="exampleFormControlTextarea1" rows="3" style="resize: none; height: auto;"></textarea>
 
-    <div id="text"><h3></h3><h3 style="display: none" id="predictions"></h3></div>
+    <div id=""><h3></h3><h3 style="display: none" id="predictions"></h3></div>
         <table style="display: none" class="table">
             <tr>
                 <th>Emotion</th>
@@ -116,24 +120,39 @@
             </tr>
         </table>
 
-        <table class="table" id="table">
-            <tbody id="sentences">
 
-            </tbody>
-        </table>
-        <button onclick="getSentences()" id="button" type="button">Predict</button>
+        <button class="btn btn-primary btn-lg" id="button" onclick="" type="submit">Push</button>
+
     </form>
     <div id="tensor"></div>
-    <div class="sign-up-form">
-        <canvas id="barChart"></canvas>
-    </div>
+
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </script>
     <script src="http://localhost:5000/chart.js">
     </script>
 </div>
+<div style="display: flex; margin-top: 2%" class="container">
+    <table style="max-width: 50%" class="table align-middle mb-0 bg-white" id="table">
+        <tbody id="sentences">
 
+        </tbody>
+    </table>
+    <canvas style="max-width: 50%;max-height: 50%;;" id="barChart"></canvas>
+    <div style="display: none" id="id" ><%-user._id%></div>
+</div>
 <script src="http://localhost:5000/model2.js">
+</script>
+<script>
+    const textarea = document.getElementById('input');
+    textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+</script>
+<script>
+
+
+
 </script>
 </body>

@@ -6,7 +6,7 @@ function argMax(array) {
 
 function getIndices(text, dictionary) {
     text = text.toLowerCase()
-    text = text.replace(/[!"#$%&()*+,-/:;<=>?@\[\\\]^_`{|}~'\t\n]/g,'')
+    text = text.replace(/[!"#$%&()*+-/:,;<=>?@\[\\\]^_`{|}~'\t\n]/g,'')
     console.log(text)
     const tokens = text.split(' ');
     const indices = [];
@@ -81,7 +81,7 @@ async function getPredict(){
 }
 
 async function predict(text){
-    const classes = ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"]
+
     const response = await fetch('http://localhost:5000/tfjs/vocab.json');
     const vocab1 = await response.json();
     const vector1 =  getIndices(text, vocab1)
@@ -125,6 +125,9 @@ function getAverageColumns(arr) {
     console.log("Result<")
     return result;
 }
+
+exports.myFunction = getAverageColumns
+
 
 async function getSentences() {
 
@@ -200,7 +203,7 @@ async function getSentences() {
             const cellText1 = document.createTextNode(Number((j*100).toFixed(2)) + "% ");
             cell1.appendChild(cellText1);
             console.log(j)
-            cell1.setAttribute('id', index);
+            cell1.setAttribute('id', classes[index]);
             row.appendChild(cell1);
         });
         const cell1 = document.createElement('td');
@@ -208,7 +211,6 @@ async function getSentences() {
         cell1.appendChild(cellText1);
         row.appendChild(cell1);
         table.appendChild(row);
-
 
     const sad      = predictions[0]
     const joy      = predictions[1]
@@ -219,45 +221,64 @@ async function getSentences() {
     console.log(sad + " SAD ")
     var ctxB = document.getElementById("barChart").getContext('2d');
     var myBarChart = new Chart(ctxB, {
-        type: 'bar',
+        type: 'pie',
         data: {
             labels: ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"],
             datasets: [{
                 label: 'Emotions',
                 data: [sad, joy, love, anger, fear, surprise],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
                     'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgba(255, 192, 203, 0.5)',
+                    'rgba(255, 0, 34, 0.2)',
+                    'rgba(0, 255, 4, 0.2)',
+                    'rgba(89, 51, 10, 0.2)'
                 ],
                 borderColor: [
-                    'rgba(255,99,132,1)',
                     'rgba(54, 162, 235, 1)',
                     'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+                    'rgba(255, 192, 203, 1)',
+                    'rgba(255, 0, 34, 1)',
+                    'rgba(0, 255, 4, 1)',
+                    'rgba(89, 51, 10, 1)'
                 ],
                 borderWidth: 1
             }]
         },
         options: {
-            scales: {
+                scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        max: 1
                     }
                 }]
             }
         }
     });
-
-}
-
-
-function getChart(){
+    window.scrollBy({
+        top: 1000,
+        behavior: 'smooth'
+    });
+    const emo = [sad, joy, love, anger, fear, surprise]
+    const data = {
+        user:document.getElementById("id").innerHTML,
+        emotions:emo,
+        text: document.getElementById("input").value
+    };
+    fetch('/main/stats', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log('Data added successfully!');
+            } else {
+                console.log('Error adding data');
+            }
+        })
+        .catch(error => console.error(error));
 
 }
