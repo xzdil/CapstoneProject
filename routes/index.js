@@ -70,29 +70,52 @@ router.get('/', ensureAuthenticated, async (req,res)=>{
          })
         console.log('profile');
 });
-router.get('/stats',ensureAuthenticated,  (req,res)=>{
-    const stats = Stats.find({user:req.user._id})
-    const year = Stats.find({user:req.user._id, date:
+router.get('/stats',ensureAuthenticated, async (req,res)=>{
+    const stats = await Stats.find({user:req.user._id})
+    const year = await Stats.find({user:req.user._id, date:
             {
                 $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
                 $lt: new Date(new Date().getFullYear()+1, new Date().getMonth(), 1)
-            }})
-    const month = Stats.find({user:req.user._id, date:
+            }
+            },{_id:0,emotions:1})
+    let yearDate = await Stats.find({user:req.user._id, date:
+            {
+                $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                $lt: new Date(new Date().getFullYear()+1, new Date().getMonth(), 1)
+            }
+            },{_id:0,date:1})
+    const month = await Stats.find({user:req.user._id, date:
     {
         $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
         $lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
-    }})
-    const week = Stats.find({user:req.user._id, date:
+    }},{_id:0,emotions:1})
+    let monthDate = await Stats.find({user:req.user._id, date:
             {
-                $gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDay()),
-                $lt: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDay()+7)
-            }})
+                $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                $lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1)
+            }},{_id:0,date:1})
+    let week = await Stats.find({user:req.user._id, date:
+            {
+                $gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()-7),
+                $lt: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+            }},{_id:0,emotions:1})
+    let weekDate = await Stats.find({user:req.user._id, date:
+            {
+                $gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()-7),
+                $lt: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+            }},{_id:0,date:1})
+    weekDate = weekDate.map((item) => item.date.getDate());
+    yearDate = yearDate.map((item) => item.date.getDate());
+    monthDate = monthDate.map((item) => item.date.getDate());
     res.render('stats',{
         user:req.user,
         stats:stats,
         year:year,
+        yearDate:yearDate,
         month:month,
-        week:week
+        monthDate:monthDate,
+        week:week,
+        weekDate:weekDate
     })
     console.log('stats');
 });

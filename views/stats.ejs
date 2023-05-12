@@ -76,6 +76,10 @@
             position: absolute;
         }
     </style>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+
 </head>
 
 <body>
@@ -92,32 +96,133 @@
     </li>
     <li class="nav-item" role="presentation">
         <a class="nav-link" id="ex-with-icons-tab-3" data-mdb-toggle="tab" href="#ex-with-icons-tabs-3" role="tab"
-           aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Settings</a>
+           aria-controls="ex-with-icons-tabs-3" aria-selected="false"><i class="fas fa-cogs fa-fw me-2"></i>Year</a>
     </li>
 </ul>
 <!-- Tabs navs -->
 
 <!-- Tabs content -->
-<div class="tab-content" id="ex-with-icons-content">
-    <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
-        <canvas id="week"></canvas></div>
+    <div class="container" style="float: top;max-width: 80%">
+        <div class="tab-content" id="ex-with-icons-content">
+            <div class="tab-pane fade show active" id="ex-with-icons-tabs-1" role="tabpanel" aria-labelledby="ex-with-icons-tab-1">
+                <canvas id="week"></canvas>
+            </div>
+            <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
+
+                <div class="container my-5" style="max-width: 200%">
+                    <div class="row">
+                        <div style="width: 100%" class="col-md-6 mx-auto">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-primary text-white py-3">
+                                    <h4 class="card-title mb-0">May 2023</h4>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table align-middle mb-0 bg-white">
+                                            <thead>
+                                            <tr class="bg-light">
+                                                <th scope="col">Sun</th>
+                                                <th scope="col">Mon</th>
+                                                <th scope="col">Tue</th>
+                                                <th scope="col">Wed</th>
+                                                <th scope="col">Thu</th>
+                                                <th scope="col">Fri</th>
+                                                <th scope="col">Sat</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>3</td>
+                                                <td>4</td>
+                                                <td>5</td>
+                                                <td>6</td>
+                                                <td>7</td>
+                                                <td>8</td>
+                                            </tr>
+                                            <tr>
+                                                <td>9</td>
+                                                <td>10</td>
+                                                <td>11</td>
+                                                <td>12</td>
+                                                <td>13</td>
+                                                <td>14</td>
+                                                <td>15</td>
+                                            </tr>
+                                            <tr>
+                                                <td>16</td>
+                                                <td>17</td>
+                                                <td>18</td>
+                                                <td>19</td>
+                                                <td>20</td>
+                                                <td>21</td>
+                                                <td>22</td>
+                                            </tr>
+                                            <tr>
+                                                <td>23</td>
+                                                <td>24</td>
+                                                <td>25</td>
+                                                <td>26</td>
+                                                <td>27</td>
+                                                <td>28</td>
+                                                <td>29</td>
+                                            </tr>
+                                            <tr>
+                                                <td>30</td>
+                                                <td>31</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
+
+
+
+            </div>
+        </div>
     </div>
-    <div class="tab-pane fade" id="ex-with-icons-tabs-2" role="tabpanel" aria-labelledby="ex-with-icons-tab-2">
-        <canvas id="month"></canvas></div>
-    </div>
-    <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
-        <canvas id="year"></canvas></div>
-    </div>
-</div>
-<!-- Tabs content -->
 </div>
 <script>
-    function getChart(id,array){
+
+
+            function argMax(array){
+        return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
+    }
+    function getMax(array){
+        const total = []
+        array.forEach((i,index)=>{
+            total.push(argMax(i.emotions))
+        })
+        return total
+    }
+
+    function getChart(id,array,labels){
+        const lab = ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"]
     var ctxB = document.getElementById(id).getContext('2d');
     var myBarChart = new Chart(ctxB, {
         type: 'line',
         data: {
-            labels: ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"],
+            labels: labels,
             datasets: [{
                 label: 'Emotions',
                 data: array,
@@ -145,16 +250,27 @@
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        max: 1
+                        callback: function (value, index, values) {
+                            // заменяем числовые значения оси x на соответствующие текстовые метки
+                            return lab[value];
+                        },
                     }
                 }]
             }
         }
     });
     }
-    getChart()
-    getChart()
-    getChart()
+
+    const week = [<%=week%>]
+    const weekDate = [<%=weekDate%>]
+    const month = [<%=month%>]
+    const monthDate = [<%=monthDate%>]
+    const year = [<%=year%>]
+    const yearDate = [<%=yearDate%>]
+    console.log([<%=week%>])
+    getChart("week" ,  getMax(week), weekDate)
+    getChart("month", getMax(month), monthDate)
+    getChart("year" , getMax(year), yearDate)
 
 </script>
 </body>
