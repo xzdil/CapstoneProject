@@ -8,8 +8,10 @@
     }
 
 router.get('/', ensureAuthenticated, async (req,res)=>{
+
+
     const last = await Stats.find({user:req.user._id}).sort({date:-1}).limit(3)
-    if(last.length > 0){
+    if(last.length > 2){
         const first = argMax(last[0].emotions)
         const second = argMax(last[1].emotions)
         const third = argMax(last[2].emotions)
@@ -71,6 +73,7 @@ router.get('/', ensureAuthenticated, async (req,res)=>{
         console.log('profile');
 });
 router.get('/stats',ensureAuthenticated, async (req,res)=>{
+
     const stats = await Stats.find({user:req.user._id})
     const year = await Stats.find({user:req.user._id, date:
             {
@@ -96,17 +99,19 @@ router.get('/stats',ensureAuthenticated, async (req,res)=>{
             }},{_id:0,date:1})
     let week = await Stats.find({user:req.user._id, date:
             {
-                $gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()-7),
-                $lt: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-            }},{_id:0,emotions:1})
+                $gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()-6),
+                $lt: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()+1)
+            }},{_id:0,emotions:1}).sort({date:-1})
     let weekDate = await Stats.find({user:req.user._id, date:
             {
-                $gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()-7),
-                $lt: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-            }},{_id:0,date:1})
+                $gte: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()-6),
+                $lt: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()+1)
+            }},{_id:0,date:1}).sort({date:-1})
     weekDate = weekDate.map((item) => item.date.getDate());
     yearDate = yearDate.map((item) => item.date.getDate());
     monthDate = monthDate.map((item) => item.date.getDate());
+    console.log(week)
+
     res.render('stats',{
         user:req.user,
         stats:stats,
@@ -114,22 +119,37 @@ router.get('/stats',ensureAuthenticated, async (req,res)=>{
         yearDate:yearDate,
         month:month,
         monthDate:monthDate,
-        week:week,
-        weekDate:weekDate
+        week:week.reverse(),
+        weekDate:weekDate.reverse()
     })
     console.log('stats');
 });
-router.post('/stats',ensureAuthenticated,  (req,res)=>{
+router.post('/stats',ensureAuthenticated, async (req,res)=>{
     const user = req.user._id
     const {text,emotions} = req.body;
-    const newStats = new Stats({
-        user,text,emotions
-    });
-    newStats.save().then(stats => {
-        console.log(newStats + ' Added to stats!')
-        req.flash('success_msg', 'Successfully registered!')
-        res.redirect('/');
-    }).catch(err => console.log(err))
+    const day = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+    const isPresent = await Stats.find({user:req.user._id, date:{
+            $gte: day,
+            $lt: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()+1)
+        }})
+    if (isPresent.length===0){
+        if (text!=="") {
+            const newStats = new Stats({
+                user, text, emotions
+            });
+            newStats.save().then(stats => {
+                console.log(newStats + ' Added to stats!')
+                req.flash('success_msg', 'Successfully registered!')
+                res.redirect('/emotions/edit');
+            }).catch(err => console.log(err))
+        } else {
+            res.redirect('/');
+            console.log('Empty')
+        }
+    } else {
+        res.redirect('/emotions/edit')
+        console.log("Already submited today!")
+    }
 });
 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign up</title>
+    <title>Statistics</title>
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -220,7 +220,7 @@
         const lab = ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"]
     var ctxB = document.getElementById(id).getContext('2d');
     var myBarChart = new Chart(ctxB, {
-        type: 'line',
+        type: 'bar',
         data: {
             labels: labels,
             datasets: [{
@@ -254,6 +254,7 @@
                             // заменяем числовые значения оси x на соответствующие текстовые метки
                             return lab[value];
                         },
+                        max:5
                     }
                 }]
             }

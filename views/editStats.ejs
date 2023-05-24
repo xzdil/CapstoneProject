@@ -72,78 +72,27 @@
 <body style="background-color: hsl(0, 0%, 93%)">
 <%-include('navbar')%>
 <div  class="card-body py-5 px-md-5">
-<div  class="form">
-    <div id="emotions"></div>
-    <div class="container">
-        <h2>Emotion classifier in text</h2>
-        <p>Describe how was your day and get your emotional statistics</p>
+    <div  class="form">
+        <div id="emotions"></div>
+        <div class="container">
+            <h2>Edit your today's submit</h2>
+            <p></p>
+        </div>
+        <br>
+        <form action="/emotions/edit" method="post" style="width: 100%">
+            <textarea placeholder="Edit your text" id="input" name="text" rows="3" class="form-control" style="resize: none; height: auto;"><%=today.text%></textarea>
+
+            <div id=""><h3></h3><h3 style="display: none" id="predictions"></h3></div>
+        </form>
+        <div style="display: flex">
+            <button class="btn btn-secondary disabled btn-lg" id="button" onclick="" type="submit">Edit</button>
+            <button class="btn btn-danger btn-lg" id="button" onclick="deleteOne()">Delete</button>
+        </div>
+        <script
+                src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+        </script>
     </div>
-    <br>
-    <form style="width: 100%">
-        <textarea placeholder="Enter your text" onchange="getSentences()" id="input" name="text" class="form-control" id="exampleFormControlTextarea1" rows="3" style="resize: none; height: auto;"></textarea>
-
-    <div id=""><h3></h3><h3 style="display: none" id="predictions"></h3></div>
-        <table style="display: none" class="table">
-            <tr>
-                <th>Emotion</th>
-                <th>Logit</th>
-            </tr>
-            <tr>
-                <td>Sadness</td>
-                <td id="sad">-</td>
-                <td>%</td>
-            </tr>
-            <tr>
-                <td>Joy</td>
-                <td id="joy">-</td>
-                <td>%</td>
-            </tr>
-            <tr>
-                <td>Love</td>
-                <td id="love">-</td>
-                <td>%</td>
-            </tr>
-            <tr>
-                <td>Anger</td>
-                <td id="anger">-</td>
-                <td>%</td>
-            </tr>
-            <tr>
-                <td>Fear</td>
-                <td id="fear">-</td>
-                <td>%</td>
-            </tr>
-            <tr>
-                <td>Surprised </td>
-                <td id="surp">-</td>
-                <td>%</td>
-            </tr>
-        </table>
-        <div id="but"> </div>
-
-        <button style="display: none" class="btn btn-primary btn-lg" id="button" onclick="submit()">Push</button>
-    </form>
-
-
-    <div id="tensor"></div>
-
-    <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
-    </script>
-    <script src="http://localhost:5000/chart.js">
-    </script>
 </div>
-<div style="display: flex; margin-top: 2%" class="container">
-    <table style="max-width: 50%" class="table align-middle mb-0 bg-white" id="table">
-        <tbody id="sentences">
-
-        </tbody>
-    </table>
-    <canvas style="max-width: 50%;max-height: 50%;;" id="barChart"></canvas>
-    <div style="display: none" id="id" ><%-user._id%></div>
-</div>
-</div>
-<script src="http://localhost:5000/model2.js">
 </script>
 <script>
     const textarea = document.getElementById('input');
@@ -151,38 +100,26 @@
         this.style.height = 'auto';
         this.style.height = (this.scrollHeight) + 'px';
     });
-</script>
-<script>
-
-    function submit(){
+    function deleteOne(){
         event.preventDefault();
-        const ids = ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"]
-        let emo = []
-        ids.forEach((i,index)=>{
-            emo.push(parseFloat(document.getElementById(i).innerHTML)/100)
-        })
-        const data = {
-            user:document.getElementById("id").innerHTML,
-            emotions:emo,
-            text: document.getElementById("input").value
-        };
-        console.log(data)
-        fetch('/main/stats', {
-            method: 'POST',
-            body: JSON.stringify(data),
+        fetch('/delete', {
+            method: 'get',
             headers: { 'Content-Type': 'application/json' },
         })
             .then(response => {
-                window.location.href = '/emotions/edit';
+                window.location.href = '/';
                 if (response.ok) {
-                    console.log('Data added successfully!');
+                    console.log('Data deleted successfully!');
                 } else {
-                    console.log('Error adding data');
+                    console.log('Error deleting data');
                 }
             })
             .catch(error => console.error(error));
-
     }
+</script>
+<script>
+
+
 
 </script>
 </body>

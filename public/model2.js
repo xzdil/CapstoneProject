@@ -128,9 +128,7 @@ function getAverageColumns(arr) {
 
 exports.myFunction = getAverageColumns
 
-
 async function getSentences() {
-
     const obj = document.getElementById("table")
     const div = document.getElementById("sentences");
     if (obj.children.length > 0) {
@@ -261,24 +259,16 @@ async function getSentences() {
         top: 1000,
         behavior: 'smooth'
     });
-    const emo = [sad, joy, love, anger, fear, surprise]
-    const data = {
-        user:document.getElementById("id").innerHTML,
-        emotions:emo,
-        text: document.getElementById("input").value
-    };
-    fetch('/main/stats', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' }
-    })
-        .then(response => {
-            if (response.ok) {
-                console.log('Data added successfully!');
-            } else {
-                console.log('Error adding data');
-            }
-        })
-        .catch(error => console.error(error));
+    // Создание элемента кнопки
+    const button = document.createElement("button");
+    button.classList.add("btn", "btn-primary", "btn-lg");
+    button.id = "button";
+    button.textContent = "Push";
+
+// Добавление обработчика события на кнопку
+    button.addEventListener("click", submit);
+    const but = document.getElementById('but')
+// Добавление кнопки на страницу
+    but.appendChild(button);
 
 }
