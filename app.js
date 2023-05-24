@@ -12,7 +12,7 @@ const db = require('./config/keys').mongoURI;
 
 const Chart = require("chart.js/auto")
 const http = require('http').Server(app);
-http.listen(process.env.PORT || 5000)
+http.listen(process.env.PORT || 80)
 const flash = require('connect-flash');
 
 const User = require("./models/User");
