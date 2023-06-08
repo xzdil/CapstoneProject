@@ -121,70 +121,17 @@
                                         <table class="table align-middle mb-0 bg-white">
                                             <thead>
                                             <tr class="bg-light">
-                                                <th scope="col">Sun</th>
                                                 <th scope="col">Mon</th>
                                                 <th scope="col">Tue</th>
                                                 <th scope="col">Wed</th>
                                                 <th scope="col">Thu</th>
                                                 <th scope="col">Fri</th>
                                                 <th scope="col">Sat</th>
+                                                <th scope="col">Sun</th>
                                             </tr>
                                             </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>3</td>
-                                                <td>4</td>
-                                                <td>5</td>
-                                                <td>6</td>
-                                                <td>7</td>
-                                                <td>8</td>
-                                            </tr>
-                                            <tr>
-                                                <td>9</td>
-                                                <td>10</td>
-                                                <td>11</td>
-                                                <td>12</td>
-                                                <td>13</td>
-                                                <td>14</td>
-                                                <td>15</td>
-                                            </tr>
-                                            <tr>
-                                                <td>16</td>
-                                                <td>17</td>
-                                                <td>18</td>
-                                                <td>19</td>
-                                                <td>20</td>
-                                                <td>21</td>
-                                                <td>22</td>
-                                            </tr>
-                                            <tr>
-                                                <td>23</td>
-                                                <td>24</td>
-                                                <td>25</td>
-                                                <td>26</td>
-                                                <td>27</td>
-                                                <td>28</td>
-                                                <td>29</td>
-                                            </tr>
-                                            <tr>
-                                                <td>30</td>
-                                                <td>31</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+                                            <tbody id="calendar">
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -195,19 +142,104 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="ex-with-icons-tabs-3" role="tabpanel" aria-labelledby="ex-with-icons-tab-3">
-
-
-
             </div>
         </div>
     </div>
 </div>
 <script>
-
-
-            function argMax(array){
+    function argMax(array){
         return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
     }
+    // Функция для создания таблицы-календаря
+    function createCalendar(year, month, data) {
+        const classes = ["Sadness", "Joy", "Love", "Anger", "Fear", "Surprise"]
+        // Получаем элемент, в котором будет располагаться таблица-календарь
+        var calendarContainer = document.getElementById("calendar");
+
+        // Создаем заголовок таблицы с названиями дней недели
+        var headerRow = document.createElement("tr");
+        var daysOfWeek = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+        for (var i = 0; i < daysOfWeek.length; i++) {
+            var headerCell = document.createElement("th");
+            headerCell.textContent = daysOfWeek[i];
+            headerRow.appendChild(headerCell);
+        }
+
+        // Создаем объект даты для первого дня месяца
+        var firstDay = new Date(year, month, 1);
+
+        // Определяем день недели первого дня месяца (0 - воскресенье, 1 - понедельник, и т.д.)
+        var startDayOfWeek = firstDay.getDay();
+        if (startDayOfWeek === 0) {
+            startDayOfWeek = 7; // Коррекция для правильного отображения
+        }
+
+        // Определяем последний день месяца
+        var lastDay = new Date(year, month + 1, 0);
+        var totalDays = lastDay.getDate();
+
+        // Создаем строки таблицы с днями месяца
+        var currentDate = new Date(firstDay);
+        currentDate.setDate(currentDate.getDate() - startDayOfWeek + 1); // Корректируем дату, чтобы учесть первый день недели
+
+        while (currentDate <= lastDay) {
+            // Создаем новую строку
+            var row = document.createElement("tr");
+            let countDay = 0
+            // Добавляем ячейки с днями недели
+            for (var j = 0; j < 7; j++) {
+                var cell = document.createElement("td");
+                var value = document.createElement("div");
+                // Проверяем, если день находится в пределах текущего месяца, то отображаем его номер
+                if (
+                    currentDate.getMonth() === month &&
+                    currentDate.getDate() <= totalDays
+                ) {
+                    let day = currentDate.getDate();
+                    // Ищем данные для текущей даты в полученных данных из MongoDB
+                    var dayData = data.find((item) => item.date.getDate() === day);
+                    if (dayData) {
+                        cell.textContent = dayData.event; // Отображаем событие
+                    } else {
+                        cell.textContent = day;
+                        value.textContent = classes[argMax(data[countDay].emotions)]
+                    }
+                }
+
+                // Добавляем ячейку в текущую строку
+                cell.appendChild(value)
+                row.appendChild(cell);
+                // Переходим к следующему дню
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            // Добавляем строку в таблицу
+            calendarContainer.appendChild(row);
+            countDay += 1;
+        }
+
+        // Добавляем заголовок таблицы
+        calendarContainer.appendChild(headerRow);
+    }
+
+    // Получаем данные из MongoDB и создаем календарь
+    function fetchData(){
+        fetch('/data')
+            .then((response) => response.json())
+            .then((data) => {
+                var currentDate = new Date();
+                var currentYear = currentDate.getFullYear();
+                var currentMonth = currentDate.getMonth();
+
+                createCalendar(currentYear, currentMonth, data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+    fetchData()
+
+
     function getMax(array){
         const total = []
         array.forEach((i,index)=>{
@@ -254,7 +286,8 @@
                             // заменяем числовые значения оси x на соответствующие текстовые метки
                             return lab[value];
                         },
-                        max:5
+                        max:6,
+                        min:-1
                     }
                 }]
             }

@@ -17,7 +17,7 @@ router.get('/edit',ensureAuthenticated, async (req,res)=>
     console.log(day)
     res.render('editStats',{
         user:req.user,
-        today:today
+        today:today,
     })
 })
 
